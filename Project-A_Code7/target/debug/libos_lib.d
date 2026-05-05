@@ -1,0 +1,1 @@
+C:\Users\30663\Desktop\Project-A_Code7\Project-A_Code7\target\debug\libos_lib.rlib: C:\Users\30663\Desktop\Project-A_Code7\Project-A_Code7\os_lib\src\lib.rs C:\Users\30663\Desktop\Project-A_Code7\Project-A_Code7\os_lib\src\queue.rs

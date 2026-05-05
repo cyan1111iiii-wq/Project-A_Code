@@ -1,0 +1,9 @@
+cargo:warning=Package name: dashboard
+cargo:warning=In workspace: true
+cargo:warning=Manifest directory: D:\program\2432\Project-A_Code7\dashboard
+cargo:warning=Target directory: D:\program\2432\Project-A_Code7\target
+cargo:warning=Skipping templates (not found at D:\program\2432\Project-A_Code7\dashboard\templates)
+cargo:warning=Skipping programfiles (not found at D:\program\2432\Project-A_Code7\dashboard\programfiles)
+cargo:warning=No assets were copied. Verify that 'templates' or 'programfiles' directories exist.
+cargo:rerun-if-changed=templates
+cargo:rerun-if-changed=programfiles

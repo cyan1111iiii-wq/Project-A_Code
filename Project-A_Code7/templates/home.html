@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sensor Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: #050816;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .container {
+      width: 90%;
+      margin: auto;
+    }
+
+    canvas {
+      background: #151933;
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 60px;
+    }
+
+    #stats {
+      margin-top: 20px;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+<h1>Sensor Dashboard</h1>
+
+<div class="container">
+  <canvas id="sensorChart"></canvas>
+  <div id="stats">Loading...</div>
+</div>
+
+<script>
+  const ctx = document.getElementById('sensorChart');
+
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: 'thermo-1',
+          data: [],
+        },
+        {
+          label: 'accel-1',
+          data: [],
+        },
+        {
+          label: 'force-1',
+          data: [],
+        }
+      ]
+    },
+    options: {
+      responsive: true
+    }
+  });
+
+  async function fetchSensor(sensor, count = 20) {
+    const res = await fetch(`/data/${sensor}/${count}`);
+    const json = await res.json();
+    return json.data.reverse().map(Number);
+  }
+
+  async function fetchBufferStats() {
+    const res = await fetch('/buffer_stats');
+    return await res.json();
+  }
+
+  async function refreshDashboard() {
+    const thermo = await fetchSensor('thermo-1');
+    const accel = await fetchSensor('accel-1');
+    const force = await fetchSensor('force-1');
+    const stats = await fetchBufferStats();
+
+    chart.data.labels = thermo.map((_, i) => `T${i + 1}`);
+    chart.data.datasets[0].data = thermo;
+    chart.data.datasets[1].data = accel;
+    chart.data.datasets[2].data = force;
+    chart.update();
+
+    document.getElementById('stats').innerText =
+            `Buffer Usage: ${stats.utilization}% | Throughput: ${stats.throughput} items/s`;
+  }
+
+  refreshDashboard();
+
+
+  setInterval(refreshDashboard, 1000);
+</script>
+</body>
+</html>
